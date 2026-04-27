@@ -15,9 +15,8 @@ from __future__ import annotations
 
 import os
 import time
-import pytest
 
-from memdb_claude_memory import MemDBMemoryTool
+import pytest
 from anthropic.lib.tools._beta_builtin_memory_tool import (
     BetaMemoryTool20250818CreateCommand,
     BetaMemoryTool20250818DeleteCommand,
@@ -25,6 +24,8 @@ from anthropic.lib.tools._beta_builtin_memory_tool import (
     BetaMemoryTool20250818StrReplaceCommand,
     BetaMemoryTool20250818ViewCommand,
 )
+
+from memdb_claude_memory import MemDBMemoryTool
 
 SKIP = not os.getenv("MEMDB_INTEGRATION_TEST")
 REASON = "set MEMDB_INTEGRATION_TEST=1 to run integration tests"

@@ -6,8 +6,6 @@ expectations are met exactly.
 
 from __future__ import annotations
 
-from typing import List, Tuple
-
 _LINE_NUMBER_WIDTH = 6  # matches SDK constant
 
 

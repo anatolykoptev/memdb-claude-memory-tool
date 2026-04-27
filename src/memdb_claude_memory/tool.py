@@ -5,6 +5,7 @@ Drop-in replacement for ``BetaLocalFilesystemMemoryTool``.
 
 from __future__ import annotations
 
+from anthropic.lib.tools import BetaFunctionToolResultType
 from anthropic.lib.tools._beta_builtin_memory_tool import (
     BetaAbstractMemoryTool,
     BetaMemoryTool20250818CreateCommand,
@@ -15,11 +16,10 @@ from anthropic.lib.tools._beta_builtin_memory_tool import (
     BetaMemoryTool20250818ViewCommand,
     ToolError,
 )
-from anthropic.lib.tools import BetaFunctionToolResultType
 
+from .formatters import format_dir_view, format_file_view, format_str_replace_snippet
 from .http_client import MemDBClient, MemDBError
 from .path_utils import PathError, is_directory_path, validate_path
-from .formatters import format_dir_view, format_file_view, format_str_replace_snippet
 
 
 class MemDBMemoryTool(BetaAbstractMemoryTool):
