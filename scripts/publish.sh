@@ -31,7 +31,7 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
 fi
 
 # 2. Verify version in pyproject.toml matches latest git tag
-VERSION=$(python3 -c "import tomllib; print(tomllib.loads(open('pyproject.toml','rb').read())['project']['version'])")
+VERSION=$(python3 -c "import tomllib; f=open('pyproject.toml','rb'); print(tomllib.load(f)['project']['version'])")
 LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
 LAST_TAG_VERSION="${LAST_TAG#v}"
 echo "pyproject version: $VERSION, last git tag: $LAST_TAG"
