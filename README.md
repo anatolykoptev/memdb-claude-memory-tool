@@ -38,7 +38,7 @@ memory = MemDBMemoryTool(
 
 client = anthropic.Anthropic()
 result = (
-    client.beta.messages.run_tools(
+    client.beta.messages.tool_runner(
         model="claude-sonnet-4-5",
         betas=["context-management-2025-06-27"],
         tools=[memory],
