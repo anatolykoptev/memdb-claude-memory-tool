@@ -22,7 +22,6 @@ Drop-in replacement for `BetaLocalFilesystemMemoryTool` — same six-method inte
 pip install memdb-claude-memory
 ```
 
-> **PyPI publish**: not yet automated. See [TODO: PyPI](#todo-pypi) below.
 > To install from source: `pip install git+https://github.com/anatolykoptev/memdb-claude-memory-tool.git`
 
 ## Quickstart
@@ -104,17 +103,38 @@ node with `key=<path>`. All six memory tool operations map to MemDB HTTP endpoin
 | `delete` (dir) | list by prefix → batch `POST /product/delete_memory` |
 | `rename` | get → create at new path → delete old (not atomic) |
 
-## TODO: PyPI
+## Publishing (maintainers only)
 
-PyPI publish requires `PYPI_TOKEN`. To publish manually:
+### One-time PyPI setup
+
+1. Create PyPI account: https://pypi.org/account/register/
+2. Reserve the package name on TestPyPI first: `bash scripts/publish.sh --testpypi`
+3. Verify on TestPyPI: https://test.pypi.org/project/memdb-claude-memory/
+4. Configure Trusted Publisher (no tokens needed) on PyPI:
+   https://pypi.org/manage/project/memdb-claude-memory/settings/publishing/
+   - Owner: `anatolykoptev`
+   - Repository: `memdb-claude-memory-tool`
+   - Workflow: `publish.yml`
+   - Environment: *(leave blank)*
+5. After this, every `git tag vX.Y.Z && git push origin vX.Y.Z` auto-publishes via GitHub Actions.
+
+### Manual release
 
 ```bash
-pip install hatchling build twine
-python -m build
-twine upload dist/*
-```
+# Install publish deps
+pip install --upgrade build twine
 
-Automated publish via GitHub Actions is planned for v0.2.0.
+# Bump version in pyproject.toml, then:
+git add pyproject.toml
+git commit -m "chore: bump version to vX.Y.Z"
+git tag -a vX.Y.Z -m "vX.Y.Z"
+git push origin main vX.Y.Z
+
+# OR manual upload without tagging:
+bash scripts/publish.sh              # to real PyPI
+bash scripts/publish.sh --testpypi  # dry-run on TestPyPI first
+bash scripts/publish.sh --dry-run   # build + validate only, no upload
+```
 
 ## See also
 
