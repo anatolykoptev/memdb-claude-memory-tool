@@ -19,10 +19,14 @@ Drop-in replacement for `BetaLocalFilesystemMemoryTool` — same six-method inte
 ## Install
 
 ```bash
-pip install memdb-claude-memory
+# From git (pinned release):
+pip install git+https://github.com/anatolykoptev/memdb-claude-memory-tool.git@v0.1.0
+
+# From local clone:
+pip install -e .
 ```
 
-> To install from source: `pip install git+https://github.com/anatolykoptev/memdb-claude-memory-tool.git`
+> **PyPI**: not yet published. Use the git install above.
 
 ## Quickstart
 

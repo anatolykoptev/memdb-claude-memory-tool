@@ -1,25 +1,37 @@
+#!/usr/bin/env python3
 """Basic usage example — Claude + MemDB memory tool.
-
-Prerequisites:
-    pip install anthropic memdb-claude-memory
-
-    # MemDB running at localhost:8080 (AUTH_ENABLED=false default)
-    docker run -e POSTGRES_PASSWORD=pass -p 8080:8080 ghcr.io/anatolykoptev/memdb:latest
 
 Usage::
 
-    ANTHROPIC_API_KEY=sk-... python examples/basic_usage.py
+    ANTHROPIC_API_KEY=sk-ant-... python3 examples/basic_usage.py
+    ANTHROPIC_API_KEY=sk-ant-... MEMDB_URL=http://localhost:8080 MEMDB_SECRET=s python3 examples/basic_usage.py
 """
 
+import os
+import sys
+
 import anthropic
+import requests
+
 from memdb_claude_memory import MemDBMemoryTool
+
+MEMDB_URL = os.getenv("MEMDB_URL", "http://localhost:8080")
+MEMDB_SECRET = os.getenv("MEMDB_SECRET", "")
+
+# Connectivity check
+try:
+    requests.get(f"{MEMDB_URL}/health", timeout=5).raise_for_status()
+except Exception as exc:
+    print(f"ERROR: MemDB unreachable at {MEMDB_URL}: {exc}", file=sys.stderr)
+    print("Start MemDB with: docker compose -f docker/docker-compose.yml up -d", file=sys.stderr)
+    sys.exit(1)
 
 # One tool instance = one memory namespace (cube_id)
 memory = MemDBMemoryTool(
-    memdb_url="http://localhost:8080",
+    memdb_url=MEMDB_URL,
     cube_id="alice",
     user_id="alice",
-    service_secret="",  # leave empty when AUTH_ENABLED=false
+    service_secret=MEMDB_SECRET,
 )
 
 client = anthropic.Anthropic()
@@ -30,7 +42,7 @@ messages = [
 
 print("Turn 1: store a preference")
 result = (
-    client.beta.messages.run_tools(
+    client.beta.messages.tool_runner(
         model="claude-sonnet-4-5",
         betas=["context-management-2025-06-27"],
         tools=[memory],
@@ -48,7 +60,7 @@ messages = [
 
 print("\nTurn 2: recall")
 result = (
-    client.beta.messages.run_tools(
+    client.beta.messages.tool_runner(
         model="claude-sonnet-4-5",
         betas=["context-management-2025-06-27"],
         tools=[memory],
