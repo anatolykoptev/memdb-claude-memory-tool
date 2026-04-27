@@ -1,6 +1,7 @@
 """Tests for path_utils module."""
 
 import pytest
+
 from memdb_claude_memory.path_utils import (
     PathError,
     is_directory_path,

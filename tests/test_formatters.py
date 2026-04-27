@@ -1,6 +1,5 @@
 """Tests for Anthropic-style output formatters."""
 
-import pytest
 from memdb_claude_memory.formatters import (
     format_dir_view,
     format_file_view,

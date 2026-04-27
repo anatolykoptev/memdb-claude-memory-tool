@@ -1,8 +1,8 @@
 """MemDB backend for the Anthropic Claude memory tool (memory_20250818)."""
 
-from .tool import MemDBMemoryTool
 from .http_client import MemDBClient, MemDBError, MemDBNotFoundError
-from .path_utils import PathError, validate_path, is_directory_path
+from .path_utils import PathError, is_directory_path, validate_path
+from .tool import MemDBMemoryTool
 
 __all__ = [
     "MemDBMemoryTool",

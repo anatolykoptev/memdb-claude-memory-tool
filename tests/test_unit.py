@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 import responses as rsps_lib
-
 from anthropic.lib.tools._beta_builtin_memory_tool import (
     BetaMemoryTool20250818CreateCommand,
     BetaMemoryTool20250818DeleteCommand,
