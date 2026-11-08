@@ -107,6 +107,32 @@ node with `key=<path>`. All six memory tool operations map to MemDB HTTP endpoin
 | `delete` (dir) | list by prefix → batch `POST /product/delete_memory` |
 | `rename` | get → create at new path → delete old (not atomic) |
 
+## Development
+
+Python 3.10 or newer. CI runs the three commands below on 3.10, 3.11 and 3.12:
+
+```bash
+pip install -e ".[dev]"
+ruff check src/ tests/
+pytest tests/test_unit.py tests/test_formatters.py tests/test_path_utils.py -v
+```
+
+`tests/test_integration.py` needs a running MemDB and is skipped unless `MEMDB_INTEGRATION_TEST=1`
+is set; it reads `MEMDB_URL` (default `http://localhost:8080`) and `MEMDB_SERVICE_SECRET`. The
+scripts in `examples/` read `MEMDB_URL` and `MEMDB_SECRET`. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+| Path | Contents |
+|---|---|
+| `src/memdb_claude_memory/tool.py` | `MemDBMemoryTool`, the six memory-tool commands plus `clear_all_memory` |
+| `src/memdb_claude_memory/http_client.py` | `MemDBClient`, a thin wrapper over the MemDB HTTP API |
+| `src/memdb_claude_memory/path_utils.py`, `formatters.py` | Path validation and the text Claude sees |
+| `examples/` | Runnable scripts: quickstart, basic usage, multi-tenant, end to end with Claude |
+
+## Status
+
+Alpha, version 0.1.0 (see [CHANGELOG.md](CHANGELOG.md)). Not yet on PyPI; install from git. Every
+document is indexed in [docs/INDEX.md](docs/INDEX.md).
+
 ## Publishing (maintainers only)
 
 ### One-time PyPI setup
@@ -145,3 +171,7 @@ bash scripts/publish.sh --dry-run   # build + validate only, no upload
 - [MemDB](https://github.com/anatolykoptev/memdb) — the storage backend
 - [Anthropic memory tool docs](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/memory-tool)
 - [Anthropic SDK Python](https://github.com/anthropics/anthropic-sdk-python)
+
+## Licence
+
+Apache-2.0, see [LICENSE](LICENSE).
